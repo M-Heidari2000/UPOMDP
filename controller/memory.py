@@ -95,7 +95,7 @@ class StaticDataset(Dataset):
         self.done[-1] = 1
         episode_ends = torch.where(self.done)[0]
 
-        all_indexes = torch.arange(self.observations.shape[0])
+        all_indexes = torch.arange(len(replay_buffer))
         distances = episode_ends[torch.searchsorted(episode_ends, all_indexes)] - all_indexes + 1
         self.valid_indexes = all_indexes[distances >= self.chunk_length]
 
