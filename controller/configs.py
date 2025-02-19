@@ -12,6 +12,7 @@ class TrainConfig:
     batch_size: int = 50
     num_epochs: int = 1024
     chunk_length: int = 50
+    test_size: float = 0.2
     lr: float = 1e-3
     eps: float = 1e-5
     clip_grad_norm: int = 1000
