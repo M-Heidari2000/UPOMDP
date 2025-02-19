@@ -1,5 +1,6 @@
 from dataclasses import dataclass, asdict
 
+
 @dataclass
 class TrainConfig:
     seed: int = 0
@@ -19,4 +20,21 @@ class TrainConfig:
     free_nats: int = 0
     kl_beta: float = 1
     
+    dict = asdict
+
+
+@dataclass
+class FinetuneConfig:
+    train_id: str
+    seed: int = 0
+    log_dir: str = 'log'
+    num_episodes: int = 10
+    num_epochs: int = 25
+    batch_size: int = 128
+    chunk_length: int = 15
+    test_size: int = 0.2
+    lr: float = 1e-3
+    eps: float = 1e-5
+    clip_grad_norm: int = 1000
+
     dict = asdict

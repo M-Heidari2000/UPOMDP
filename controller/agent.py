@@ -32,11 +32,10 @@ class CEMAgent:
         # initialize rnn hidden to zero vector
         self.rnn_hidden = torch.zeros(1, self.posterior_model.rnn_hidden_dim, device=self.device)
 
-    def __call__(self, obs, goal, prev_action=None,):
+    def __call__(self, obs, prev_action=None):
 
         # convert o_t and a_{t-1} to a torch tensor and add a batch dimension
         obs = torch.as_tensor(obs, device=self.device).unsqueeze(0)
-        goal = torch.as_tensor(goal, device=self.device).repeat(self.num_candidates, 1)
         if prev_action is not None:
             prev_action = torch.as_tensor(prev_action, device=self.device).unsqueeze(0)
         else:
@@ -74,7 +73,7 @@ class CEMAgent:
                 # start generating trajectories starting from s_t using transition model
                 for t in range(self.planning_horizon):
                     observation_trajectories[t] = self.observation_model(state=state)
-                    total_predicted_reward += self.reward_model(state=state, goal=goal).squeeze()
+                    total_predicted_reward += self.reward_model(state=state).squeeze()
                     # get next state from our prior (transition model)
                     next_state_prior = self.transition_model(
                         prev_state=state,
@@ -127,11 +126,10 @@ class RSAgent:
         # initialize rnn hidden to zero vector
         self.rnn_hidden = torch.zeros(1, self.posterior_model.rnn_hidden_dim, device=self.device)
 
-    def __call__(self, obs, goal, prev_action=None):
+    def __call__(self, obs, prev_action=None):
 
         # convert o_t and a_{t-1} to a torch tensor and add a batch dimension
         obs = torch.as_tensor(obs, device=self.device).unsqueeze(0)
-        goal = torch.as_tensor(goal, device=self.device).repeat(self.num_candidates, 1)
         if prev_action is not None:
             prev_action = torch.as_tensor(prev_action, device=self.device).unsqueeze(0)
         else:
@@ -164,7 +162,7 @@ class RSAgent:
             # start generating trajectories starting from s_t using transition model
             for t in range(self.planning_horizon):
                 observation_trajectories[t] = self.observation_model(state=state)
-                total_predicted_reward += self.reward_model(state=state, goal=goal).squeeze()
+                total_predicted_reward += self.reward_model(state=state).squeeze()
                 # get next state from our prior (transition model)
                 next_state_prior = self.transition_model(
                     prev_state=state,
